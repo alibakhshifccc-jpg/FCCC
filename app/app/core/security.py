@@ -57,6 +57,25 @@ class JWTHandler:
         except jwt.InvalidTokenError:
             raise 
 
+    @staticmethod
+    def token_expiration(token: str)-> datetime | None:
+        try:
+            decoded_token = jwt.decode(
+                token,
+                JWTHandler.secret_key,
+                algorithms=[JWTHandler.algorithm],
+                options={"verify_exp": True}
 
-        
+            )
 
+            exp = int(decoded_token.get('exp'))
+            if not  exp:
+                raise
+
+            return exp
+
+        except jwt.ExpiredSignatureError:
+            raise
+
+        except jwt.InvalidTokenError:
+            raise
