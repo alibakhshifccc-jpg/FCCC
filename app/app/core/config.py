@@ -31,3 +31,21 @@ class setting(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int
     REFRESH_TOKEN_EXPIRE_MINUTES: int
     JWT_ALGORITHM: str = "HS256" 
+    FIRST_SUPERUSER = EmailStr
+    FIRST_SUPERUSER_PASSWORD: str
+    POSTGRES_ASYNC_URI:AsyncPostgresDsn | None = None
+    REDIS_URI: RedisDsn | None = None
+    SUB_PATH: str = ""
+    HEALTH_USERNAME: str
+    HEALTH_PASSWORD: str
+    COMMIT_ID: str | None = None
+    APP_VERSION: str | None = None
+
+
+    @classmethod
+    @field_validator("BACKEND_CORS_ORIGINS", mode="before")
+    def assemble_cors_origins(cls, v: str | list[str])-> None:
+        if isinstance(v, str):
+            return [i.strip() for i in v.strip("[]").split(",")]
+
+        return v 
