@@ -56,7 +56,7 @@ class Settings(BaseSettings):
         if isinstance(v, str):
             return RedisDsn(v)
 
-    model_config = SettingsConfigDict(env_file=".env", extra="allow")  # Allow extra inputs
+    model_config = SettingsConfigDict(env_file=".env", extra="allow")
 
 
 settings = Settings()

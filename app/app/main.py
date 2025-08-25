@@ -45,3 +45,9 @@ async def lifespan(app: FastAPI):
         response_header="X-API-Cache",
         ignore_arg_types=[Request, Response, Session, AsyncSession]
     )
+    yield
+
+
+app = FastAPI(
+
+)
