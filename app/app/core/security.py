@@ -31,3 +31,14 @@ class JWTHandler:
         return jwt.encode(
             payload, JWTHandler.secret_key, algorithm=JWTHandler.algorithm
         )
+    
+
+    @staticmethod
+    def encode_refresh_token(payload: dict[str, Any])-> str:
+        expire = datetime.utcnow() + timedelta(minutes=JWTHandler.refresh_token_expire)
+        payload.update({'exp': expire})
+        return jwt.encode(
+            payload,
+            JWTHandler.secret_key,
+            algorithm=JWTHandler.algorithm
+        )
