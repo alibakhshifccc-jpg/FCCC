@@ -42,3 +42,21 @@ class JWTHandler:
             JWTHandler.secret_key,
             algorithm=JWTHandler.algorithm
         )
+    
+    @staticmethod
+    def decode(token: str)-> dict:
+        try:
+            result: dict = jwt.decode(
+                token,
+                JWTHandler.secret_key,
+                algorithms=[JWTHandler.algorithm]
+            ) 
+            return result
+        except jwt.ExpiredSignatureError:
+            raise 
+        except jwt.InvalidTokenError:
+            raise 
+
+
+        
+
