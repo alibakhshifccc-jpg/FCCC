@@ -17,3 +17,8 @@ ACCESS_TOKEN_BLOCKLIST_KEY = "access_token_blocklist:{token}"
 
 class AsyncPostgresDsn(PostgresDsn):
     allowed_schemes = {"postgres+asyncpg", "postgresql+asyncpg"}
+
+
+class setting:
+    def __init__(self)->Noen:
+        pass
