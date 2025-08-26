@@ -12,9 +12,6 @@ from cache import Cache
 current_dir = os.path.dirname(__file__)
 static_dir = os.path.join(current_dir, "static")
 
-
-
-
 def init_logger()->None:
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
@@ -27,8 +24,6 @@ def init_logger()->None:
     logger.addHandler(handler)
 
 init_logger()
-
-
 
 
 def make_middleware()-> list[Middleware]:
