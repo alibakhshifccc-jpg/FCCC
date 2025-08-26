@@ -1,7 +1,6 @@
 from pydantic import BaseModel, ConfigDict, EmailStr
 from typing import Optional
 
-
 class UserBase(BaseModel):
     email: EmailStr | None = None
     is_active: bool | None = True
@@ -17,11 +16,23 @@ class UserUpdate(UserBase):
     password: str | None = None
 
 
-
 class UserInDBBase(UserBase):
     id: int | None = None
     model_config = ConfigDict(from_attributes=True)
 
 
+class User(UserInDBBase):...
 
-class User(UserInDBBase):... 
+
+class UserInDB(UserInDBBase):
+    hashed_password: str
+
+
+class UserIn(BaseModel):
+    email: EmailStr
+    password: str
+
+
+class LoginUser(BaseModel):
+    email: EmailStr
+    password: str

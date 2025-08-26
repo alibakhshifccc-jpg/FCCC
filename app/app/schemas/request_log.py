@@ -1,14 +1,11 @@
 import datetime import datetime
 from pydantic import BaseModel, ConfigDict
 
-
 class RequestLogInDBBase(BaseModel):
     id: int
     created: datetime
     modified: datetime
     model_config = ConfigDict(from_attributes=True)
-
-
 
 
 class RequestLogCreate(BaseModel):
@@ -21,5 +18,6 @@ class RequestLogCreate(BaseModel):
     trace: str | None = None
     processing_time: float | None = None
     tracker_id: str | None = None
+
 
 class RequestLogUpdate(BaseModel):...
