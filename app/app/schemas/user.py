@@ -2,8 +2,6 @@ from pydantic import BaseModel, ConfigDict, EmailStr
 from typing import Optional
 
 
-
-
 class UserBase(BaseModel):
     email: EmailStr | None = None
     is_active: bool | None = True
@@ -12,4 +10,8 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
+    password: str | None = None
+
+
+class UserUpdate(UserBase):
     password: str | None = None
