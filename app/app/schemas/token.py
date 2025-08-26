@@ -13,4 +13,3 @@ class RefreshToken(BaseModel):
 
 class TokenPayload(BaseModel):
     sub: str | None = None
-

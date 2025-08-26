@@ -21,3 +21,4 @@ class RequestLogCreate(BaseModel):
 
 
 class RequestLogUpdate(BaseModel):...
+
