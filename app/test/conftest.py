@@ -52,3 +52,25 @@ async def db() -> AsyncSession:
     async with async_session() as seeion:
         async with async_engine as engine:
             pass
+
+
+@pytest_asyncio.fixture(scope="module")
+async def client(db) -> AsyncClient:
+    app.dependency_overrides[get_db_async] = lambda: db
+    async with AsyncClient(app=app, base_url="http://test") as client:
+        yield client
+
+
+
+@pytest_asyncio.fixture(scope="session")
+async def superuser_tokens(db: AsyncSession) -> dict[str, str]:  # noqa: indirect usage
+    user = await crud_user.user.get_by_email(db=db, email=settings.FIRST_SUPERUSER)
+    assert user != None
+
+    refresh_token = JWTHandler.encode_refresh_token(
+        payload={"sub": "refresh", "id": str(user.id)}
+    )
+    access_token = JWTHandler.encode(payload={"sub": "access", "id": str(user.id)})
+
+    tokens = {"Refresh-Token": refresh_token, "Access-Token": access_token}
+    return tokens
