@@ -23,5 +23,23 @@ async def create_super_admin(db: AsyncSession) -> None:
         await crud.user.create(db=db, obj_in=user)
 
 
+def dijkstra(graph: dict[int, dict[int, float]], start_vertex: int):
+    queue: list[tuple[int, int]] = [(0, start_vertex)]
+    distances: dict[int, float] = {vertex: float("inf") for vertex in graph}
+    distances[start_vertex] = 0
+    previous_vertices: dict[int, int | None] = {vertex: None for vertex in graph}
 
-        
+    while queue:
+        current_distance, current_vertex = heapq.heappop(queue)
+
+        if current_distance > distances[current_vertex]:
+            continue
+
+        for neighbor, weight in graph[current_vertex].items():
+            distance = current_distance + weight
+
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                previous_vertices[neighbor] = current_vertex
+                heapq.heappush(queue, (distance, neighbor))
+    return distances, previous_vertices
