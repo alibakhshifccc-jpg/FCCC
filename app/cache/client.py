@@ -6,3 +6,5 @@ from fastapi import Request, Response
 from redis.asyncio import client
 
 
+class Cache:
+    pass 
