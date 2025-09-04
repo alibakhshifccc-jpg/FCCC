@@ -27,3 +27,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
                 self.model.is_deleted.is_(None),
             )
         )
+        response = await db.execute(query)
+        return response.scalar_one_or_none()
+    
+    
