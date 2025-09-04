@@ -147,7 +147,6 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self,
         db: AsyncSession,
         id_: int | str,
-
     )-> ModelType | None:
         query = (
             update(self.model)
