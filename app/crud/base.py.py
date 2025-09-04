@@ -143,6 +143,7 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         await db.refresh(db_obj)
         return db_obj
     
+
     async def remove(
         self,
         db: AsyncSession,
@@ -162,3 +163,6 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         response = await db.execute(query)
         await db.commit()
         return response.scalar_one_or_none()
+    
+
+    
