@@ -12,7 +12,18 @@ ModelType = TypeVar("ModelType", bound=Base)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
 UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 
-
-
 class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
-    pass 
+    
+    def __init__(self, model: Type[ModelType]) -> None:
+        self.model = model
+
+
+    async def get(self, db: AsyncSession, id_: int | str )-> ModelType | None:
+        query = select(
+            self.model
+        ).where(
+            and_(
+                self.model.id == id_,
+                self.model.is_deleted.is_(None),
+            )
+        )
