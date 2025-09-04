@@ -12,6 +12,7 @@ ModelType = TypeVar("ModelType", bound=Base)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
 UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
 
+
 class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     
     def __init__(self, model: Type[ModelType]) -> None:
@@ -47,5 +48,34 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         query = select(func.count()).select_from(select(self.model).subquery())
         response = await db.execute(query)
         return response.scalar_one()
+    
+    async def get_multi(
+        self,
+        db: AsyncSession,
+        skip: int = 0,
+        limit: int | None = 100,
+        order_by: list = None,
+        order_field: str = "created",
+        order_desc: bool = False,
+    ) -> Sequence[Union[Row, RowMapping, Any]]:
+        if order_by is None:
+            order_by = []
 
+        if order_desc:
+            order_by.append(getattr(self.model, order_field).desc())
+        else:
+            order_by.append(getattr(self.model, order_field).asc())
+
+        query = (
+            select(self.model)
+            .where(self.model.is_deleted.is_(None))
+            .order_by(*order_by)
+            .offset(skip)
+        )
+
+        if limit is not None:
+            query = query.limit(limit)
+
+        response = await db.execute(query)
+        return response.scalars().all()
 
